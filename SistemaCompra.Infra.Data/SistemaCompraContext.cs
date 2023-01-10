@@ -37,7 +37,7 @@ namespace SistemaCompra.Infra.Data
         {
             optionsBuilder.UseLoggerFactory(loggerFactory)  
                 .EnableSensitiveDataLogging()
-                .UseSqlServer(@"Server=DESKTOP-4MMNMOS\\SQLEXPRESS; Database=SistemaCompraDb; Trusted_Connection=True;");
+                .UseSqlServer(@"Server=localhost\\SQLEXPRESS01; Database=SistemaCompraDb; Trusted_Connection=True;");
         }
     }
 }

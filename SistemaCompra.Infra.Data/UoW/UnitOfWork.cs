@@ -13,7 +13,6 @@ namespace SistemaCompra.Infra.Data.UoW
 
         public bool Commit()
         {
-            return true;
             return sistemaDeComprasContexto.SaveChanges() > 0;
         }
 
