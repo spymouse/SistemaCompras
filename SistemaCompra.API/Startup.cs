@@ -12,6 +12,7 @@ using SistemaCompra.Domain.ProdutoAggregate;
 using SistemaCompra.Domain.SolicitacaoCompraAggregate;
 using SistemaCompra.Infra.Data;
 using SistemaCompra.Infra.Data.Produto;
+using SistemaCompra.Infra.Data.SolicitacaoCompra;
 using SistemaCompra.Infra.Data.UoW;
 using System;
 
@@ -29,12 +30,14 @@ namespace SistemaCompra.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSwaggerGen();
             var assembly = AppDomain.CurrentDomain.Load("SistemaCompra.Application");
             services.AddMediatR(assembly);
             services.AddAutoMapper(assembly);
             services.AddSignalR();
 
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<ISolicitacaoCompraRepository, SolicitacaoCompraRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<SistemaCompraContext>(options =>

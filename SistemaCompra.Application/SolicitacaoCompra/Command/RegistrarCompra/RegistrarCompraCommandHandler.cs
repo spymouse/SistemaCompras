@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Newtonsoft.Json;
 using SistemaCompra.Infra.Data.UoW;
 using System;
 using System.Collections.Generic;
@@ -20,8 +21,13 @@ namespace SistemaCompra.Application.SolicitacaoCompra.Command.RegistrarCompra
 
         public Task<bool> Handle(RegistrarCompraCommand request, CancellationToken cancellationToken)
         {
-            
+            var solicitacaoCompra = new SolicitacaoCompraAgg.SolicitacaoCompra(request.UsuarioSolicitante,request.NomeFornecedor);
+            solicitacaoCompra.RegistrarCompra(request.Itens);
 
+            this.solicitacaoCompraRepository.RegistrarCompra(solicitacaoCompra);
+            
+            Commit();
+            PublishEvents(solicitacaoCompra.Events);
             return Task.FromResult(true);
         }
 

@@ -7,11 +7,18 @@ using SolicitacaoCompraAgg = SistemaCompra.Domain.SolicitacaoCompraAggregate;
 
 namespace SistemaCompra.Infra.Data.SolicitacaoCompra
 {
-    public class SolicitacaoCompraRepository : IEntityTypeConfiguration<SolicitacaoCompraAgg.SolicitacaoCompra>
+    public class SolicitacaoCompraRepository : SolicitacaoCompraAgg.ISolicitacaoCompraRepository
     {
-        public void Configure(EntityTypeBuilder<SolicitacaoCompraAgg.SolicitacaoCompra> builder)
+        private readonly SistemaCompraContext context;
+
+        public SolicitacaoCompraRepository(SistemaCompraContext context)
         {
-            builder.ToTable("SolicitacaoCompra");
+            this.context = context;
+        }
+
+        public void RegistrarCompra(SolicitacaoCompraAgg.SolicitacaoCompra solicitacaoCompra)
+        {
+            context.Set<SolicitacaoCompraAgg.SolicitacaoCompra>().Add(solicitacaoCompra);
         }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaCompra.Infra.Data;
 
 namespace SistemaCompra.API.Migrations
 {
     [DbContext(typeof(SistemaCompraContext))]
-    partial class SistemaCompraContextModelSnapshot : ModelSnapshot
+    [Migration("20230110021612_SolicitacaoCompra")]
+    partial class SolicitacaoCompra
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
