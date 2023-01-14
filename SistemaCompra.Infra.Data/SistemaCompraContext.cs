@@ -5,39 +5,35 @@ using SistemaCompra.Infra.Data.Produto;
 using SistemaCompra.Infra.Data.SolicitacaoCompra;
 using ProdutoAgg = SistemaCompra.Domain.ProdutoAggregate;
 using SolicitacaoAgg = SistemaCompra.Domain.SolicitacaoCompraAggregate;
+using Microsoft.Extensions.Configuration;
+
 
 namespace SistemaCompra.Infra.Data
 {
     public class SistemaCompraContext : DbContext
     {
         public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder => { builder.AddConsole(); });
+        private readonly IConfiguration configuration;
 
-        public SistemaCompraContext(DbContextOptions options) : base(options) { }
+        public SistemaCompraContext(DbContextOptions options, IConfiguration configuration) : base(options) {
+            this.configuration = configuration;
+        }
         public DbSet<ProdutoAgg.Produto> Produtos { get; set; }
         public DbSet<SolicitacaoAgg.SolicitacaoCompra> SolicitacaoCompra { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<ProdutoAgg.Produto>()
-            //    .HasData(
-            //        new ProdutoAgg.Produto("Produto01", "Descricao01", "Madeira", 100)
-            //    );
-
-            modelBuilder.Entity<SolicitacaoAgg.SolicitacaoCompra>().OwnsOne(x => x.NomeFornecedor );
+            modelBuilder.Entity<SolicitacaoAgg.SolicitacaoCompra>().OwnsOne(x => x.NomeFornecedor);
             modelBuilder.Entity<SolicitacaoAgg.SolicitacaoCompra>().OwnsOne(x => x.UsuarioSolicitante);
-
-            modelBuilder.Entity<SolicitacaoAgg.SolicitacaoCompra>().Property(p => p.TotalGeral).HasColumnType("decimal(18,4)");
             modelBuilder.Ignore<Event>();
 
             modelBuilder.ApplyConfiguration(new ProdutoConfiguration());
             modelBuilder.ApplyConfiguration(new SolicitacaoCompraConfiguration());
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseLoggerFactory(loggerFactory)  
                 .EnableSensitiveDataLogging()
-                .UseSqlServer(@"Server=localhost\\SQLEXPRESS01; Database=SistemaCompraDb; Trusted_Connection=True;");
+                .UseSqlServer(this.configuration.GetConnectionString("DefaultConnection"));
         }
     }
 }

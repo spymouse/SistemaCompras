@@ -1,7 +1,6 @@
 ﻿using SistemaCompra.Domain.Core;
 using SistemaCompra.Domain.Core.Model;
 using SistemaCompra.Domain.ProdutoAggregate;
-using SistemaCompra.Domain.SolicitacaoCompraAggregate.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,10 +35,7 @@ namespace SistemaCompra.Domain.SolicitacaoCompraAggregate
 
         public void RegistrarCompra(IEnumerable<Item> itens)
         {
-            if (itens.Count().Equals(0))
-            {
-                throw new BusinessRuleException("O total de itens de compra deve ser maior que 0");
-            }
+            if (itens.Count().Equals(0)) throw new BusinessRuleException("O total de itens de compra deve ser maior que 0");
 
             foreach (var item in itens)
             {
@@ -54,5 +50,6 @@ namespace SistemaCompra.Domain.SolicitacaoCompraAggregate
             this.Itens = itens.ToList();
 
         }
+
     }
 }
